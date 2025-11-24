@@ -1,27 +1,117 @@
-# CalendarApp
+# 📅 Angular Standalone Calendar Application
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.1.2.
+A fully functional **calendar scheduling application** built using
+**Angular 17 standalone components**.\
+This project demonstrates event management, category-based filtering,
+clean UI structure, and modern Angular architecture without NgModules.
 
-## Development server
+## ✨ Overview
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+This application allows users to:
 
-## Code scaffolding
+-   Create, edit, and delete calendar events\
+-   Categorize events using color-coded categories\
+-   Filter events by category or date\
+-   View events on a monthly calendar interface
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+It is designed as part of an Angular hands-on assignment, following best
+practices for scalable architecture and maintainable code.
 
-## Build
+## 🚀 Features
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### 🗓 Calendar & Event Management
 
-## Running unit tests
+-   Monthly calendar grid\
+-   Add events with title, date, category, and description\
+-   Edit or remove existing events\
+-   View events for any selected day
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### 🎨 Category System
 
-## Running end-to-end tests
+-   Predefined event categories (e.g., Work, Personal, Meeting)\
+-   Each category includes a custom color\
+-   Category-based visual cues throughout the UI
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### 🔍 Filters & Search
 
-## Further help
+-   Search events by title\
+-   Filter events by category\
+-   Custom date filtering using a standalone pipe
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### 🧱 Modern Angular Architecture
+
+-   100% **standalone components**\
+-   Strong TypeScript interfaces for Event & Category\
+-   Modular, reusable components\
+-   SCSS for styling\
+-   Lightweight, clean code structure
+
+### 🧪 Unit Testing
+
+Includes basic unit tests for: - Component creation\
+- Event addition\
+- Category filtering\
+- Function invocation tests
+
+## 🛠️ Technologies Used
+
+  Technology            Purpose
+  --------------------- ------------------------------------------
+  **Angular 17**        Core framework (Standalone Architecture)
+  **TypeScript**        Type safety and interfaces
+  **SCSS**              Component-level styling
+  **UUID**              Unique event IDs
+  **Jasmine + Karma**   Unit testing
+
+## 📂 Project Structure
+
+    src/
+     ├── app/
+     │    ├── calendar/
+     │    │      ├── calendar.component.ts
+     │    │      ├── calendar.component.html
+     │    │      ├── calendar.component.scss
+     │    │      ├── filter-by-date.pipe.ts
+     │    │      ├── category.model.ts
+     │    │      └── event.model.ts
+     │    ├── app.component.ts
+     │    └── main.ts
+     └── assets/
+
+## ▶️ Getting Started
+
+### **1. Install Dependencies**
+
+``` bash
+npm install
+```
+
+### **2. Start the Development Server**
+
+``` bash
+ng serve
+```
+
+### **3. Open in Browser**
+
+    http://localhost:4200/
+
+## 📌 Purpose of This Project
+
+This project was built as part of a practical assignment to demonstrate:
+
+-   Ability to build Angular applications using standalone components\
+-   Clean UI/UX with reusable components\
+-   Working knowledge of pipes, filtering, event-state management\
+-   Writing basic unit tests in Angular\
+-   Understanding of calendar logic and date handling
+
+## 🤝 Contributing
+
+Contributions are welcome.\
+If you'd like to improve UI, logic, or add features, feel free to fork
+the repo and create a pull request.
+
+## 📄 License
+
+This project is provided for educational and demonstration purposes.
