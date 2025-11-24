@@ -1,0 +1,159 @@
+<div class="main-container">
+
+  <!-- Calendar Container -->
+  <div class="calendar-container">
+    <div class="header">
+      <button (click)="prevMonth()" title="Previous Month" >❮</button>
+      <h2 class="month-year">{{ currentDate | date: 'MMMM yyyy' }}</h2>
+      <button (click)="nextMonth()" title="Next Month">❯</button>
+    </div>
+    <button (click)="goToToday()" class="today-btn">Today</button>
+    
+    <div class="weekdays">
+      <div *ngFor="let day of weekdays" class="weekday-cell">{{ day }}</div>
+    </div>
+    
+    <!-- Date Grid -->
+    <div class="date-grid">
+      <div
+        *ngFor="let date of daysInMonth"
+        class="date-cell"
+        [class.current-month]="isCurrentMonth(date)"
+        [class.today]="isToday(date)"
+        [class.selected]="isSelected(date)"
+        (click)="selectDate(date)"
+      >
+        {{ date.getDate() }}
+        <div class="event-indicators">
+            <span *ngFor="let event of events | filterByDate: date" 
+                  class="event-dot" 
+                  [style.background-color]="getCategoryColor(event.categoryId)">
+            </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Events Sidebar -->
+  <div class="event-sidebar" [class.visible]="showSidebar">
+    <div class="sidebar-header">
+      <h3>Events on {{ selectedDate | date: 'mediumDate' }}</h3>
+      <button class="close-btn" (click)="closeSidebar()" title="Close Sidebar">❌</button>
+    </div>
+
+    <button class="create-new-btn" (click)="openCreateDialog()">Create New Event</button>
+    <button (click)="openCategoryManager()" class="create-new-btn manage-categories-btn">Manage Categories</button>
+
+
+    <div class="event-search-container">
+        <input 
+          [(ngModel)]="eventSearchTerm" 
+          placeholder="Search events..." 
+          class="event-search-input"
+        />
+    </div>
+
+    <div class="event-list">
+      <p *ngIf="filteredEvents.length === 0" style="color: red">No events found.</p>
+      <div *ngFor="let event of filteredEvents" class="event-item">
+        <div class="event-details">
+            <span class="event-title" [style.color]="getCategoryColor(event.categoryId)">{{ event.title }}</span>
+            <span class="event-description">{{ event.description }}</span>
+            <span class="event-time" *ngIf="getEventTime(event)">🕒 {{ getEventTime(event) }}</span>
+            <span class="time-left" *ngIf="getTimeRemaining(event)">⏳ {{ getTimeRemaining(event) }}</span>
+        </div>
+        <div class="event-actions">
+            <button class="edit-btn" (click)="openEditDialog(event)" title="Edit Event">✏️</button>
+            <button class="delete-btn" (click)="confirmDeleteEvent(event.id)" title="Delete Event">🗑️</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Event Dialog -->
+<div class="dialog-overlay" *ngIf="showEventDialog">
+    <div class="dialog-box">
+        <div class="dialog-header">
+            <h2>{{ editingEvent ? 'Edit Event' : 'Create Event' }}</h2>
+            <button class="close-btn" (click)="closeEventDialog()" (click)="closeEventDialog()">❌</button>
+        </div>
+        <div class="dialog-body">
+            <p *ngIf="errorMessage" class="dialog-error">{{ errorMessage }}</p>
+
+            <label for="eventTitle">Title:</label>
+            <input id="eventTitle" [(ngModel)]="dialogTitle" placeholder="Event Title" required />
+            
+            <label for="eventDescription">Description:</label>
+            <textarea id="eventDescription" [(ngModel)]="dialogDescription" placeholder="Event Description"></textarea>
+
+            <label for="eventCategory">Category:</label>
+            <select id="eventCategory" [(ngModel)]="dialogCategoryId">
+                <option *ngFor="let category of categories" [value]="category.id">
+                    {{ category.name }}
+                </option>
+            </select>
+            <div class="time-inputs">
+                <label for="startTime">Starts At:</label>
+                <input id="startTime" type="time" [(ngModel)]="dialogStartTime" />
+                
+                <label for="endTime">Ends At:</label>
+                <input id="endTime" type="time" [(ngModel)]="dialogEndTime" />
+            </div>
+        </div>
+        <div class="dialog-footer">
+            <button (click)="saveEvent()" class="saveBtn" [disabled]="isLoading">
+                {{ isLoading ? 'Saving...' : 'Save' }}
+            </button>
+            <button (click)="closeEventDialog()" class="closeBtn" [disabled]="isLoading">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Category Dialog-->
+<div class="dialog-overlay" *ngIf="showCategoryDialog">
+    <div class="dialog-box">
+        <div class="dialog-header">
+            <h2>Manage Categories</h2>
+            <button class="close-btn" (click)="closeCategoryDialog()" (click)="closeCategoryDialog()">❌</button>
+        </div>
+        <div class="dialog-body">
+            <p *ngIf="errorMessage" class="dialog-error">{{ errorMessage }}</p>
+
+            <h4>Add New Category</h4>
+            <div class="add-category-form">
+                <input [(ngModel)]="newCategoryName" placeholder="Category Name" />
+                <input type="color" [(ngModel)]="newCategoryColor" />
+                <button class="AddBtn" (click)="addCategory()">Add</button>
+            </div>
+            
+            <h4>Existing Categories</h4>
+            <ul class="category-list">
+                <li *ngFor="let category of categories">
+                    <span [style.color]="category.color">{{ category.name }}</span>
+                    <button class="delete-btn" (click)="confirmDeleteCategory(category.id)"  title="Delete Category">🗑️</button>
+                </li>
+            </ul>
+        </div>
+        <div class="dialog-footer">
+            <button class="closeBtn" (click)="closeCategoryDialog()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation Dialog -->
+<div class="dialog-overlay" *ngIf="showConfirmDialog">
+    <div class="dialog-box">
+        <div class="dialog-header">
+            <h2>Confirm Action</h2>
+            <button class="close-btn" (click)="closeConfirmDialog()">❌</button>
+        </div>
+        <div class="dialog-body">
+            <p>{{ confirmMessage || 'Are you sure?' }}</p>
+        </div>
+        <div class="dialog-footer">
+            <button class="saveBtn" (click)="executeConfirmAction()">Confirm</button>
+            <button (click)="closeConfirmDialog()" class="closeBtn">Cancel</button>
+        </div>
+    </div>
+</div>

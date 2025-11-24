@@ -1,0 +1,430 @@
+.calendar-container {
+  max-width: 600px;
+  margin: 20px auto;
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 5px;
+  font-family: sans-serif;
+  width: 600px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.today-btn {
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.weekdays, .date-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+}
+
+.weekday-cell, .date-cell {
+  padding: 10px;
+  border: 1px solid #eee;
+  box-sizing: border-box;
+}
+
+.weekday-cell {
+  font-weight: bold;
+  background-color: #f4f4f4;
+}
+
+.date-cell {
+  background-color: #fafafa;
+  color: #ccc;
+  cursor: pointer;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.date-cell.current-month {
+  color: #333;
+  background-color: #fff;
+}
+
+.date-cell.today {
+  background-color: #007bff;
+  color: white;
+  border-radius: 17%;
+}
+
+.date-cell:hover {
+  background-color: #e9e9e9;
+}
+
+.date-cell.today:hover {
+  background-color: #007bff;
+  opacity: 0.9;
+}
+
+.date-cell.selected {
+  border: 2px solid lightgreen;
+  background-color: lightgreen;
+  border-radius: 18%;
+}
+
+.date-cell.has-event::after {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background-color: red;
+  border-radius: 50%;
+}
+
+.event-indicators {
+  position: absolute;
+  bottom: 2px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 2px;
+}
+
+.event-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.month-year {
+  margin: 0;
+  color: green;
+}
+
+button {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.main-container {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  margin: 20px auto;
+}
+
+.event-sidebar {
+  width: 300px;
+  margin-left: 20px;
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  display: none;
+  align-self: flex-start;
+}
+
+.event-sidebar.visible {
+  display: block;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.event-list {
+  margin-top: 15px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.event-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.event-list::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.event-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  flex-shrink: 0;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 3px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.create-event {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.create-event input {
+  width: calc(100% - 70px);
+  padding: 5px;
+  margin-right: 5px;
+}
+
+.create-new-btn {
+  margin-top: 15px;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.event-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-title {
+  font-weight: bold;
+}
+
+.event-description {
+  font-size: 0.8em;
+  color: #555;
+}
+
+.event-actions button {
+  margin-left: 5px;
+  padding: 3px 6px;
+  font-size: 0.8em;
+}
+
+.edit-btn {
+  background-color: unset;
+  color: black;
+  border: none;
+}
+
+.delete-btn {
+  background-color: unset;
+  color: white;
+  border: none;
+}
+
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.dialog-box {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 15px;
+}
+
+.dialog-header h2 {
+  margin: 0;
+}
+
+.dialog-body label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.dialog-body input,
+.dialog-body textarea,
+.dialog-body select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.dialog-footer button {
+  padding: 8px 16px;
+}
+
+.manage-categories-btn {
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  background-color: rgb(102, 202, 102);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-category-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.add-category-form input[type="text"] {
+  flex-grow: 1;
+}
+
+.category-list {
+  list-style: none;
+  padding: 0;
+}
+
+.category-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.time-inputs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.time-inputs label {
+  font-weight: normal;
+  margin-bottom: 0;
+}
+
+.time-inputs input[type="time"] {
+  flex: 1;
+  margin-bottom: 0;
+  width: auto;
+}
+
+.event-time {
+  font-size: 0.8em;
+  color: #555;
+  margin-top: 4px;
+}
+
+.time-left {
+  font-size: 0.8em;
+  color: #007bff;
+  margin-top: 4px;
+  font-weight: bold;
+}
+
+.dialog-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+h2, h3 {
+  color: seagreen;
+  margin: unset !important;
+}
+
+.closeBtn {
+  border: unset;
+  background: unset;
+  color: indianred;
+}
+
+.AddBtn {
+  position: relative;
+  top: -6px;
+  border: unset;
+  background: unset;
+  color: cornflowerblue;
+}
+
+.saveBtn {
+  position: relative;
+  border: unset;
+  background: unset;
+  color: darkgreen;
+}
+
+h4 {
+  color: darkcyan;
+}
+
+label {
+  color: steelblue;
+}
+
+.event-search-container {
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.event-search-input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
